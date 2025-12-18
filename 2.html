@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Mess Pass</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+
+<style>
+*{
+    box-sizing:border-box;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial;
+}
+
+body{
+    margin:0;
+    background:#e9e9e9;
+    height:100vh;
+}
+
+/* FULL SCREEN APP */
+.card{
+    width:100%;
+    min-height:100vh;
+    background:#fff;
+    display:flex;
+    flex-direction:column;
+}
+
+/* HEADER */
+.header{
+    background:#2b2b2b;
+    color:#fff;
+    padding:12px;
+    text-align:center;
+    font-weight:600;
+    position:relative;
+}
+.header .close{
+    position:absolute;
+    right:14px;
+    top:8px;
+    font-size:18px;
+}
+
+/* CONTENT */
+.content{
+    padding:16px;
+    flex:1;
+    display:flex;
+    flex-direction:column;
+}
+
+/* PART 1 */
+.part1{
+    border:1px solid #d0d0d0;
+    border-radius:16px;
+    padding:16px;
+    background:#fff;
+    box-shadow:0 4px 12px rgba(0,0,0,0.08);
+}
+
+/* PART 2 */
+.part2{
+    flex:1;
+    margin-top:16px;
+    border:20px solid #1e2253;
+    background:#fff;
+    box-shadow:0 4px 12px rgba(0,0,0,0.08);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+/* USER INFO */
+.top{
+    display:flex;
+    position:relative;
+    margin-bottom:12px;
+}
+
+.photo{
+    width:72px;
+    height:72px;
+    border-radius:50%;
+    border:2px solid #cfcfcf;
+    margin-right:12px;
+    overflow:hidden;
+}
+.photo img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.info h2{
+    margin:0;
+    font-size:22px;
+    font-weight:700;
+}
+
+.info p{
+    margin:3px 0;
+    font-size:14px;
+    font-weight:500;
+}
+
+.count{
+    position:absolute;
+    right:0;
+    top:0;
+    background:#d9d9d9;
+    border-radius:50%;
+    padding:6px 10px;
+    font-weight:700;
+}
+
+/* DATE TIME */
+.course{
+    margin-top:10px;
+    font-size:13px;
+    font-weight:500;
+}
+
+.datetime{
+    margin-top:8px;
+    display:flex;
+    justify-content:space-between;
+    font-size:14px;
+    font-weight:800;
+}
+
+/* STATUS */
+.approved{
+    text-align:center;
+    color: #5CB85C;
+    font-weight:1000;
+    margin-top:14px;
+}
+
+.rate{
+    display:flex;
+    margin:6px auto 0;
+    padding:4px 4px;
+    border:3px solid #b13a15;
+    background:#fff;
+    color:#171513;
+    border-radius:14px;
+    font-size:12px;
+}
+
+/* ACCEPTED PILL */
+.accepted-pill{
+    display:flex;
+    align-items:center;
+    padding:6px 16px;
+    /* border:4px solid #0e092a; */
+    border-radius:30px;
+    background:#fff;
+}
+
+/* VIDEO */
+.accepted-video{
+    height:365px;
+    width:auto;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+    <div class="header">
+        Mess Pass
+        <span class="close">✕</span>
+    </div>
+
+    <div class="content">
+
+        <div class="part1">
+            <div class="top">
+                <div class="photo">
+                    <img src="Screenshot 2025-12-18 142209.png">
+                </div>
+
+                <div class="info">
+                    <h2 id="meal">BreakFast</h2>
+                    <p><strong>12404870</strong></p>
+                    <p>Shaik Masthan</p>
+                    <p>Mess-1 BH-5</p>
+                </div>
+
+                <div class="count" id="countdown">30</div>
+            </div>
+
+            <div class="course">
+                P132-NNP:B.Tech. (CSE - AI and ML)(2024)
+            </div>
+
+            <div class="datetime">
+                <span id="date"></span>
+                <span id="time"></span>
+            </div>
+
+            <div class="approved">Meal Approved</div>
+            <button class="rate">⭐ RATE US</button>
+        </div>
+
+        <div class="part2">
+            <div class="accepted-pill">
+                <video
+                    id="acceptedVideo"
+                    class="accepted-video"
+                    src="WhatsApp Video 2025-12-18 at 8.36.03 PM.mp4"
+                    autoplay
+                    muted
+                    loop
+                    playsinline>
+                </video>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+let countdownTimer;
+
+function startCountdown(){
+    let countdown = 30;
+    const el = document.getElementById("countdown");
+    const video = document.getElementById("acceptedVideo");
+
+    clearInterval(countdownTimer);
+
+    if(video){
+        video.currentTime = 0;
+        video.play().catch(()=>{});
+    }
+
+    countdownTimer = setInterval(()=>{
+        el.innerText = countdown;
+        countdown--;
+
+        if(countdown < 0){
+            clearInterval(countdownTimer);
+            el.innerText = "0";
+
+            if(video){
+                video.pause();
+            }
+        }
+    },1000);
+}
+
+function updateUI(){
+    const now = new Date();
+    const mins = now.getHours()*60 + now.getMinutes();
+
+    let meal = "Meal Closed";
+    if(mins>=450 && mins<=570) meal="BreakFast";
+    else if(mins>=720 && mins<=870) meal="Lunch";
+    else if(mins>=1020 && mins<=1110) meal="Snacks";
+    else if(mins>=1170 && mins<=1290) meal="Dinner";
+
+    document.getElementById("meal").innerText = meal;
+    document.getElementById("date").innerText =
+        now.toLocaleDateString(undefined,{month:"short",day:"2-digit",year:"numeric"});
+    document.getElementById("time").innerText =
+        now.toLocaleTimeString(undefined,{hour:"2-digit",minute:"2-digit",hour12:true});
+
+    if(meal !== "Meal Closed"){
+        startCountdown();
+    }
+}
+
+updateUI();
+setInterval(updateUI,60000);
+</script>
+
+</body>
+</html>
