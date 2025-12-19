@@ -59,10 +59,10 @@ body{
     box-shadow:0 4px 12px rgba(0,0,0,0.08);
 }
 
-/* PART 2 */
+/* PART 2 (BOTTOM FRAME) */
 .part2{
     flex:1;
-    margin-top:16px;
+    margin-top:0;
     border:20px solid #1e2253;
     background:#fff;
     box-shadow:0 4px 12px rgba(0,0,0,0.08);
@@ -133,7 +133,7 @@ body{
 .approved{
     text-align:center;
     color:#5CB85C;
-    font-weight:1000;
+    font-weight:900;
     margin-top:14px;
 }
 
@@ -152,18 +152,19 @@ body{
 .accepted-pill{
     width:100%;
     height:100%;
-    border-radius:12px;
-    overflow:hidden;          /* 🔒 keeps video inside */
+    border-radius:10px;
+    overflow:hidden; /* 🔒 keeps video inside */
     display:flex;
-    align-items:center;
     justify-content:center;
+    align-items:center;
 }
 
-/* VIDEO */
+/* VIDEO (MORE ZOOM) */
 .accepted-video{
     width:100%;
     height:100%;
-    object-fit:cover;         /* 🔥 fills frame perfectly */
+    object-fit:cover;
+    transform: scale(1.95); /* 🔥 slightly more zoom */
 }
 </style>
 </head>
