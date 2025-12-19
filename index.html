@@ -59,7 +59,7 @@ body{
     box-shadow:0 4px 12px rgba(0,0,0,0.08);
 }
 
-/* PART 2 (BOTTOM FRAME – MOBILE SAFE) */
+/* PART 2 */
 .part2{
     flex:1;
     margin-top:16px;
@@ -69,25 +69,6 @@ body{
     display:flex;
     justify-content:center;
     align-items:center;
-}
-
-/* INNER SAFE VIDEO AREA */
-.video-frame{
-    width:100%;
-    height:100%;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    overflow:hidden; /* 🔥 prevents overflow on phone */
-}
-
-/* VIDEO – PERFECTLY FITS */
-.accepted-video{
-    width:100%;
-    height:100%;
-    max-width:100%;
-    max-height:100%;
-    object-fit:contain; /* change to cover if needed */
 }
 
 /* USER INFO */
@@ -159,12 +140,30 @@ body{
 .rate{
     display:flex;
     margin:6px auto 0;
-    padding:4px 4px;
+    padding:4px 6px;
     border:3px solid #b13a15;
     background:#fff;
     color:#171513;
     border-radius:14px;
     font-size:12px;
+}
+
+/* ACCEPTED FRAME */
+.accepted-pill{
+    width:100%;
+    height:100%;
+    border-radius:12px;
+    overflow:hidden;          /* 🔒 keeps video inside */
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+/* VIDEO */
+.accepted-video{
+    width:100%;
+    height:100%;
+    object-fit:cover;         /* 🔥 fills frame perfectly */
 }
 </style>
 </head>
@@ -180,7 +179,6 @@ body{
 
     <div class="content">
 
-        <!-- PART 1 -->
         <div class="part1">
             <div class="top">
                 <div class="photo">
@@ -210,9 +208,8 @@ body{
             <button class="rate">⭐ RATE US</button>
         </div>
 
-        <!-- PART 2 -->
         <div class="part2">
-            <div class="video-frame">
+            <div class="accepted-pill">
                 <video
                     id="acceptedVideo"
                     class="accepted-video"
@@ -271,7 +268,9 @@ function updateUI(){
     document.getElementById("time").innerText =
         now.toLocaleTimeString(undefined,{hour:"2-digit",minute:"2-digit",hour12:true});
 
-    if(meal !== "Meal Closed") startCountdown();
+    if(meal !== "Meal Closed"){
+        startCountdown();
+    }
 }
 
 updateUI();
