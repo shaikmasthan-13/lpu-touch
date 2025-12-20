@@ -17,7 +17,7 @@ body{
     height:100vh;
 }
 
-/* FULL SCREEN */
+/* FULL SCREEN APP */
 .card{
     width:100%;
     min-height:100vh;
@@ -34,13 +34,12 @@ body{
     text-align:center;
     font-weight:700;
     position:relative;
-    font-size:18px;
 }
 .header .close{
     position:absolute;
     right:14px;
     top:10px;
-    font-size:20px;
+    font-size:18px;
 }
 
 /* CONTENT */
@@ -49,15 +48,16 @@ body{
     flex:1;
     display:flex;
     flex-direction:column;
-    gap:0; /* 🔥 NO GAP */
+    gap:0;
 }
 
 /* PART 1 */
 .part1{
     flex:1;
+    width:100%;
     border:1px solid #d0d0d0;
     border-radius:18px;
-    padding:18px;
+    padding:20px;
     background:#fff;
     box-shadow:0 4px 12px rgba(0,0,0,0.08);
 }
@@ -65,6 +65,7 @@ body{
 /* PART 2 */
 .part2{
     flex:1;
+    width:100%;
     border:20px solid #1e2253;
     background:#fff;
     box-shadow:0 4px 12px rgba(0,0,0,0.08);
@@ -76,18 +77,19 @@ body{
 /* USER INFO */
 .top{
     display:flex;
+    width:100%;
     position:relative;
-    margin-bottom:14px;
+    margin-bottom:16px;
 }
 
-/* PHOTO – INCREASED SIZE */
 .photo{
-    width:90px;
-    height:90px;
+    width:150px;
+    height:150px;
     border-radius:50%;
     border:3px solid #cfcfcf;
-    margin-right:14px;
+    margin-right:16px;
     overflow:hidden;
+    flex-shrink:0;
 }
 .photo img{
     width:100%;
@@ -95,81 +97,83 @@ body{
     object-fit:cover;
 }
 
-/* INFO */
+.info{
+    flex:1;
+}
 .info h2{
     margin:0;
-    font-size:24px;
+    font-size:28px;
     font-weight:800;
 }
-
 .info p{
-    margin:4px 0;
-    font-size:15px;
+    margin:6px 0;
+    font-size:18px;
     font-weight:600;
 }
 
-/* COUNT */
 .count{
     position:absolute;
     right:0;
     top:0;
     background:#d9d9d9;
     border-radius:50%;
-    padding:8px 12px;
+    padding:10px 14px;
     font-weight:800;
+    font-size:18px;
 }
 
 /* COURSE */
 .course{
-    margin-top:12px;
-    font-size:14px;
+    margin-top:14px;
+    font-size:16px;
     font-weight:600;
 }
 
-/* DATE & TIME */
+/* DATE TIME */
 .datetime{
-    margin-top:12px;
+    margin-top:18px;
     display:flex;
-    gap:28px;  /* ✅ proper spacing */
-    font-size:16px;
+    justify-content:space-between;
+    font-size:18px;
     font-weight:900;
 }
 
 /* STATUS */
 .approved{
     text-align:center;
-    color:#5CB85C;
     font-weight:900;
-    margin-top:16px;
-    font-size:16px;
+    margin-top:20px;
+    font-size:20px;
 }
 
+/* RATE */
 .rate{
     display:flex;
-    margin:8px auto 0;
+    margin:10px auto 0;
     padding:6px 14px;
     border:3px solid #b13a15;
     background:#fff;
     color:#171513;
-    border-radius:18px;
-    font-size:13px;
+    border-radius:16px;
+    font-size:14px;
+    font-weight:700;
 }
 
-/* ACCEPTED VIDEO */
+/* VIDEO */
 .accepted-pill{
-    overflow:hidden;
     width:100%;
     height:100%;
     display:flex;
     justify-content:center;
     align-items:center;
+    overflow:hidden;
 }
 
 .accepted-video{
     width:100%;
     height:100%;
     object-fit:cover;
-    transform:scale(1.68); /* 🔥 zoom */
+    transform:scale(1.85);
 }
 </style>
 </head>
@@ -195,15 +199,15 @@ body{
                 <div class="info">
                     <h2 id="meal">BreakFast</h2>
                     <p><strong>12404870</strong></p>
-                    <p>Shaik Masthan</p>
-                    <p>Mess-1 BH-5</p>
+                    <p><strong>Shaik Masthan</strong></p>
+                    <p><strong>Mess-1 BH-5</strong></p>
                 </div>
 
-                <div class="count" id="countdown">30</div>
+                <div class="count" id="countdown">-</div>
             </div>
 
             <div class="course">
-                P132-NNP: B.Tech (CSE-AI & ML) (2024)
+                P132-NNP : B.Tech (CSE-AI & ML) 2024
             </div>
 
             <div class="datetime">
@@ -211,18 +215,17 @@ body{
                 <span id="time"></span>
             </div>
 
-            <div class="approved">Meal Approved</div>
+            <div class="approved" id="status">Meal Closed</div>
             <button class="rate">⭐ RATE US</button>
         </div>
 
         <!-- PART 2 -->
         <div class="part2">
-            <div class="accepted-pill">
+            <div class="accepted-pill" id="videoWrap">
                 <video
                     id="acceptedVideo"
                     class="accepted-video"
                     src="WhatsApp Video 2025-12-18 at 8.36.03 PM.mp4"
-                    autoplay
                     muted
                     loop
                     playsinline>
@@ -236,46 +239,76 @@ body{
 <script>
 let countdownTimer;
 
+function stopVideo(){
+    const video = document.getElementById("acceptedVideo");
+    if(video){
+        video.pause();
+        video.currentTime = 0;
+    }
+}
+
 function startCountdown(){
     let countdown = 30;
     const el = document.getElementById("countdown");
     const video = document.getElementById("acceptedVideo");
 
     clearInterval(countdownTimer);
-    video.currentTime = 0;
-    video.play().catch(()=>{});
+    el.innerText = countdown;
+
+    if(video){
+        video.currentTime = 0;
+        video.play().catch(()=>{});
+    }
 
     countdownTimer = setInterval(()=>{
-        el.innerText = countdown--;
+        el.innerText = countdown;
+        countdown--;
+
         if(countdown < 0){
             clearInterval(countdownTimer);
             el.innerText = "0";
-            video.pause();
+            stopVideo();
         }
     },1000);
 }
 
 function updateUI(){
     const now = new Date();
+    const mins = now.getHours()*60 + now.getMinutes();
 
+    let meal = "Meal Closed";
+    if(mins>=450 && mins<=600) meal="BreakFast";
+    else if(mins>=720 && mins<=900) meal="Lunch";
+    else if(mins>=1020 && mins<=1110) meal="Snacks";
+    else if(mins>=1170 && mins<=1340) meal="Dinner";
+
+    const statusEl = document.getElementById("status");
+    const videoWrap = document.getElementById("videoWrap");
+    const countdownEl = document.getElementById("countdown");
+
+    document.getElementById("meal").innerText = meal;
     document.getElementById("date").innerText =
-        now.toLocaleDateString(undefined,{
-            month:"long",
-            day:"2-digit",
-            year:"numeric"
-        });
-
+        now.toLocaleDateString(undefined,{month:"short",day:"2-digit",year:"numeric"});
     document.getElementById("time").innerText =
-        now.toLocaleTimeString(undefined,{
-            hour:"2-digit",
-            minute:"2-digit",
-            hour12:true
-        });
+        now.toLocaleTimeString(undefined,{hour:"2-digit",minute:"2-digit",hour12:true});
 
-    startCountdown();
+    if(meal === "Meal Closed"){
+        statusEl.innerText = "Meal Closed";
+        statusEl.style.color = "#d9534f";
+        countdownEl.innerText = "-";
+        clearInterval(countdownTimer);
+        stopVideo();
+        videoWrap.style.display = "none";
+    }else{
+        statusEl.innerText = "Meal Approved";
+        statusEl.style.color = "#5CB85C";
+        videoWrap.style.display = "flex";
+        startCountdown();
+    }
 }
 
 updateUI();
+setInterval(updateUI,60000);
 </script>
 
 </body>
