@@ -9,6 +9,8 @@
 *{
     box-sizing:border-box;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial;
+    margin:0;
+    padding:0;
 }
 
 body{
@@ -20,7 +22,7 @@ body{
 /* FULL SCREEN APP */
 .card{
     width:100%;
-    min-height:100vh;
+    height:100vh;
     background:#fff;
     display:flex;
     flex-direction:column;
@@ -44,28 +46,27 @@ body{
 
 /* CONTENT */
 .content{
-    padding:16px;
-    flex:1;
     display:flex;
     flex-direction:column;
-    gap:0;
+    height: calc(100% - 48px); /* subtract header height */
 }
 
 /* PART 1 */
 .part1{
-    flex:1;
     width:100%;
     border:1px solid #d0d0d0;
     border-radius:18px;
     padding:20px;
     background:#fff;
     box-shadow:0 4px 12px rgba(0,0,0,0.08);
+    flex: 0 0 auto; /* grow naturally based on content */
+    overflow: hidden;
 }
 
 /* PART 2 */
 .part2{
-    flex:1;
     width:100%;
+    flex:1; /* take remaining space */
     border:20px solid #1e2253;
     background:#fff;
     box-shadow:0 4px 12px rgba(0,0,0,0.08);
@@ -115,7 +116,7 @@ body{
     position:absolute;
     right:0;
     top:0;
-    background:#d9d9d9;
+    background:#827e7e;
     border-radius:50%;
     padding:10px 14px;
     font-weight:800;
@@ -131,7 +132,7 @@ body{
 
 /* DATE TIME */
 .datetime{
-    margin-top:18px;
+    margin-top:50px;
     display:flex;
     justify-content:space-between;
     font-size:18px;
@@ -173,7 +174,7 @@ body{
     width:100%;
     height:100%;
     object-fit:cover;
-    transform:scale(1.85);
+    transform:scale(1.99);
 }
 </style>
 </head>
@@ -207,7 +208,7 @@ body{
             </div>
 
             <div class="course">
-                P132-NNP : B.Tech (CSE-AI & ML) 2024
+                P132-NNP:B.Tech. (CSE- AI and ML)(2024)
             </div>
 
             <div class="datetime">
@@ -277,7 +278,7 @@ function updateUI(){
     const mins = now.getHours()*60 + now.getMinutes();
 
     let meal = "Meal Closed";
-    if(mins>=450 && mins<=600) meal="BreakFast";
+    if(mins>=450 && mins<=700) meal="BreakFast";
     else if(mins>=720 && mins<=900) meal="Lunch";
     else if(mins>=1020 && mins<=1110) meal="Snacks";
     else if(mins>=1170 && mins<=1340) meal="Dinner";
