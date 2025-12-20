@@ -17,7 +17,7 @@ body{
     height:100vh;
 }
 
-/* FULL SCREEN APP */
+/* FULL SCREEN */
 .card{
     width:100%;
     min-height:100vh;
@@ -30,16 +30,17 @@ body{
 .header{
     background:#2b2b2b;
     color:#fff;
-    padding:12px;
+    padding:14px;
     text-align:center;
-    font-weight:600;
+    font-weight:700;
     position:relative;
+    font-size:18px;
 }
 .header .close{
     position:absolute;
     right:14px;
-    top:8px;
-    font-size:18px;
+    top:10px;
+    font-size:20px;
 }
 
 /* CONTENT */
@@ -48,21 +49,22 @@ body{
     flex:1;
     display:flex;
     flex-direction:column;
+    gap:0; /* 🔥 NO GAP */
 }
 
 /* PART 1 */
 .part1{
+    flex:1;
     border:1px solid #d0d0d0;
-    border-radius:16px;
-    padding:16px;
+    border-radius:18px;
+    padding:18px;
     background:#fff;
     box-shadow:0 4px 12px rgba(0,0,0,0.08);
 }
 
-/* PART 2 (BOTTOM FRAME) */
+/* PART 2 */
 .part2{
     flex:1;
-    margin-top:0;
     border:20px solid #1e2253;
     background:#fff;
     box-shadow:0 4px 12px rgba(0,0,0,0.08);
@@ -75,15 +77,16 @@ body{
 .top{
     display:flex;
     position:relative;
-    margin-bottom:12px;
+    margin-bottom:14px;
 }
 
+/* PHOTO – INCREASED SIZE */
 .photo{
-    width:72px;
-    height:72px;
+    width:90px;
+    height:90px;
     border-radius:50%;
-    border:2px solid #cfcfcf;
-    margin-right:12px;
+    border:3px solid #cfcfcf;
+    margin-right:14px;
     overflow:hidden;
 }
 .photo img{
@@ -92,41 +95,44 @@ body{
     object-fit:cover;
 }
 
+/* INFO */
 .info h2{
     margin:0;
-    font-size:22px;
-    font-weight:700;
+    font-size:24px;
+    font-weight:800;
 }
 
 .info p{
-    margin:3px 0;
-    font-size:14px;
-    font-weight:500;
+    margin:4px 0;
+    font-size:15px;
+    font-weight:600;
 }
 
+/* COUNT */
 .count{
     position:absolute;
     right:0;
     top:0;
     background:#d9d9d9;
     border-radius:50%;
-    padding:6px 10px;
-    font-weight:700;
-}
-
-/* DATE TIME */
-.course{
-    margin-top:10px;
-    font-size:13px;
-    font-weight:500;
-}
-
-.datetime{
-    margin-top:8px;
-    display:flex;
-    justify-content:space-between;
-    font-size:14px;
+    padding:8px 12px;
     font-weight:800;
+}
+
+/* COURSE */
+.course{
+    margin-top:12px;
+    font-size:14px;
+    font-weight:600;
+}
+
+/* DATE & TIME */
+.datetime{
+    margin-top:12px;
+    display:flex;
+    gap:28px;  /* ✅ proper spacing */
+    font-size:16px;
+    font-weight:900;
 }
 
 /* STATUS */
@@ -134,37 +140,36 @@ body{
     text-align:center;
     color:#5CB85C;
     font-weight:900;
-    margin-top:14px;
+    margin-top:16px;
+    font-size:16px;
 }
 
 .rate{
     display:flex;
-    margin:6px auto 0;
-    padding:4px 6px;
+    margin:8px auto 0;
+    padding:6px 14px;
     border:3px solid #b13a15;
     background:#fff;
     color:#171513;
-    border-radius:14px;
-    font-size:12px;
+    border-radius:18px;
+    font-size:13px;
 }
 
-/* ACCEPTED FRAME */
+/* ACCEPTED VIDEO */
 .accepted-pill{
+    overflow:hidden;
     width:100%;
     height:100%;
-    border-radius:10px;
-    overflow:hidden; /* 🔒 keeps video inside */
     display:flex;
     justify-content:center;
     align-items:center;
 }
 
-/* VIDEO (MORE ZOOM) */
 .accepted-video{
     width:100%;
     height:100%;
     object-fit:cover;
-    transform: scale(1.95); /* 🔥 slightly more zoom */
+    transform:scale(1.68); /* 🔥 zoom */
 }
 </style>
 </head>
@@ -180,6 +185,7 @@ body{
 
     <div class="content">
 
+        <!-- PART 1 -->
         <div class="part1">
             <div class="top">
                 <div class="photo">
@@ -197,7 +203,7 @@ body{
             </div>
 
             <div class="course">
-                P132-NNP:B.Tech. (CSE - AI and ML)(2024)
+                P132-NNP: B.Tech (CSE-AI & ML) (2024)
             </div>
 
             <div class="datetime">
@@ -209,6 +215,7 @@ body{
             <button class="rate">⭐ RATE US</button>
         </div>
 
+        <!-- PART 2 -->
         <div class="part2">
             <div class="accepted-pill">
                 <video
@@ -235,47 +242,40 @@ function startCountdown(){
     const video = document.getElementById("acceptedVideo");
 
     clearInterval(countdownTimer);
-
-    if(video){
-        video.currentTime = 0;
-        video.play().catch(()=>{});
-    }
+    video.currentTime = 0;
+    video.play().catch(()=>{});
 
     countdownTimer = setInterval(()=>{
-        el.innerText = countdown;
-        countdown--;
-
+        el.innerText = countdown--;
         if(countdown < 0){
             clearInterval(countdownTimer);
             el.innerText = "0";
-            if(video) video.pause();
+            video.pause();
         }
     },1000);
 }
 
 function updateUI(){
     const now = new Date();
-    const mins = now.getHours()*60 + now.getMinutes();
 
-    let meal = "Meal Closed";
-    if(mins>=450 && mins<=570) meal="BreakFast";
-    else if(mins>=720 && mins<=870) meal="Lunch";
-    else if(mins>=1020 && mins<=1110) meal="Snacks";
-    else if(mins>=1170 && mins<=1290) meal="Dinner";
-
-    document.getElementById("meal").innerText = meal;
     document.getElementById("date").innerText =
-        now.toLocaleDateString(undefined,{day:"2-digit",month:"short",year:"numeric"});
-    document.getElementById("time").innerText =
-        now.toLocaleTimeString(undefined,{hour:"2-digit",minute:"2-digit",hour12:true});
+        now.toLocaleDateString(undefined,{
+            month:"long",
+            day:"2-digit",
+            year:"numeric"
+        });
 
-    if(meal !== "Meal Closed"){
-        startCountdown();
-    }
+    document.getElementById("time").innerText =
+        now.toLocaleTimeString(undefined,{
+            hour:"2-digit",
+            minute:"2-digit",
+            hour12:true
+        });
+
+    startCountdown();
 }
 
 updateUI();
-setInterval(updateUI,60000);
 </script>
 
 </body>
